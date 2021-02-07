@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/api/Api.dart';
-import 'package:myapp/models/Complain.dart';
+import 'package:myapp/models/Wedding.dart';
 
-class Suggestions extends StatefulWidget {
+class Weddings extends StatefulWidget {
   @override
-  _SuggestionsState createState() => _SuggestionsState();
+  _WeddingsState createState() => _WeddingsState();
 }
 
-class _SuggestionsState extends State<Suggestions> {
+class _WeddingsState extends State<Weddings> {
   Image image;
-  List<Complain> complains = [];
 
-  _SuggestionsState() {
-    this.getLatestArticles();
+  List<Wedding> weddings = [];
+
+  _WeddingsState() {
+    getLatestArticles();
   }
 
   getLatestArticles() async {
-    var _complains = await Api.fetchComplains();
+    var _weddings = await Api.fetchWeddings();
     setState(() {
-      complains = _complains;
+      weddings = _weddings;
     });
   }
 
@@ -49,6 +50,19 @@ class _SuggestionsState extends State<Suggestions> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        Container(
+                          width: 200,
+                          child: Text(
+                            'الحالة',
+                            textAlign: TextAlign.right,
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                              fontFamily: 'Arabic',
+                            ),
+                          ),
+                        ),
                         Container(
                           width: 200,
                           child: Text(
@@ -94,7 +108,7 @@ class _SuggestionsState extends State<Suggestions> {
                   SizedBox(
                     height: 20,
                   ),
-                  for (var article in complains) TableRow(article: article)
+                  for (var article in weddings) TableRow(article: article)
                 ],
               ),
             ),
@@ -111,7 +125,7 @@ class TableRow extends StatelessWidget {
     this.article,
   }) : super(key: key);
 
-  final Complain article;
+  final article;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +143,20 @@ class TableRow extends StatelessWidget {
             Container(
               width: 200,
               child: Text(
-                article.timestamp,
+                article.approvalStatus,
+                textAlign: TextAlign.right,
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontFamily: 'Arabic',
+                ),
+              ),
+            ),
+            Container(
+              width: 200,
+              child: Text(
+                article.date,
                 textAlign: TextAlign.right,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(

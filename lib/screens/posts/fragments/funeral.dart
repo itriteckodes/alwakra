@@ -1,6 +1,12 @@
+import 'dart:convert';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
+import 'dart:typed_data';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_image_picker/flutter_web_image_picker.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:myapp/api/Api.dart';
 
 class Funeral extends StatefulWidget {
   @override
@@ -9,6 +15,81 @@ class Funeral extends StatefulWidget {
 
 class _FuneralState extends State<Funeral> {
   Image image;
+  Uint8List intListImage;
+  String imageString;
+
+  var option1Text;
+
+//father, groom, location, date, address, mobile, image;
+  final nameController = TextEditingController();
+  final buryDateController = TextEditingController();
+  final buryTimeController = TextEditingController();
+  final burryAddressController = TextEditingController();
+  final consolationDateController = TextEditingController();
+  final menAddressController = TextEditingController();
+  final menLocationController = TextEditingController();
+  final menMobileController = TextEditingController();
+  final womenAddressController = TextEditingController();
+  final womenLocationController = TextEditingController();
+  final womenMobileController = TextEditingController();
+
+  var error = false;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    buryDateController.dispose();
+    buryTimeController.dispose();
+    burryAddressController.dispose();
+    consolationDateController.dispose();
+    menAddressController.dispose();
+    menLocationController.dispose();
+    menMobileController.dispose();
+    womenAddressController.dispose();
+    womenLocationController.dispose();
+    womenMobileController.dispose();
+    super.dispose();
+  }
+
+//method to load image and update `uploadedImage`
+
+  _startFilePicker() async {
+    InputElement uploadInput = FileUploadInputElement();
+    uploadInput.click();
+
+    uploadInput.onChange.listen((e) {
+      // read file content as dataURL
+      final files = uploadInput.files;
+      if (files.length == 1) {
+        final file = files[0];
+        FileReader reader = FileReader();
+
+        reader.onLoadEnd.listen((e) {
+          setState(() {
+            intListImage = reader.result;
+          });
+        });
+
+        reader.onError.listen((fileEvent) {
+          setState(() {
+            option1Text = "Some Error occured while reading the file";
+          });
+        });
+
+        reader.readAsArrayBuffer(file);
+      }
+    });
+  }
+
+  getImageFile() {
+    if (intListImage != null) {
+      imageString = base64.encode(intListImage);
+      return Image.memory(base64Decode(imageString));
+    } else {
+      print('Bytes not found');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -51,6 +132,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: menMobileController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -80,6 +162,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextField(
+                            controller: menAddressController,
                             maxLines: 6,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
@@ -92,7 +175,7 @@ class _FuneralState extends State<Funeral> {
                       Container(
                         width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
                         child: Text(
-                          'للاستفسار - رجال',
+                          'للاستفسار - النساء',
                           textDirection: TextDirection.rtl,
                           style: TextStyle(
                             color: Colors.black,
@@ -107,6 +190,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: womenMobileController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -121,7 +205,7 @@ class _FuneralState extends State<Funeral> {
                       Container(
                         width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
                         child: Text(
-                          ' عنوان عزا رجال',
+                          ' عنوان عزا النساء',
                           textDirection: TextDirection.rtl,
                           style: TextStyle(
                             color: Colors.black,
@@ -136,6 +220,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextField(
+                            controller: womenAddressController,
                             maxLines: 6,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
@@ -149,7 +234,60 @@ class _FuneralState extends State<Funeral> {
                         height: 30,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          if (!Api.validateFuneral(
+                            buryDateController.text,
+                            buryTimeController.text,
+                            burryAddressController.text,
+                            consolationDateController.text,
+                            menAddressController.text,
+                            menLocationController.text,
+                            menMobileController.text,
+                            womenAddressController.text,
+                            womenLocationController.text,
+                            womenMobileController.text,
+                            imageString,
+                          )) {
+                            EasyLoading.showError("Please fill all fields");
+                            return;
+                          }
+                          EasyLoading.show(status: 'Please Wait');
+                          var result = await Api.submitFuneral(
+                            buryDateController.text,
+                            buryTimeController.text,
+                            burryAddressController.text,
+                            consolationDateController.text,
+                            menAddressController.text,
+                            menLocationController.text,
+                            menMobileController.text,
+                            womenAddressController.text,
+                            womenLocationController.text,
+                            womenMobileController.text,
+                            imageString,
+                          );
+
+                          if (result) {
+                            setState(() {
+                              image = null;
+                              intListImage = null;
+                              imageString = null;
+                              nameController.text = '';
+                              buryDateController.text = '';
+                              buryTimeController.text = '';
+                              burryAddressController.text = '';
+                              consolationDateController.text = '';
+                              menAddressController.text = '';
+                              menLocationController.text = '';
+                              menMobileController.text = '';
+                              womenAddressController.text = '';
+                              womenLocationController.text = '';
+                              womenMobileController.text = '';
+                            });
+                            EasyLoading.showSuccess('Consolation saved');
+                          } else {
+                            EasyLoading.showSuccess('Unable to save data');
+                          }
+                        },
                         child: Material(
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(10),
@@ -185,9 +323,9 @@ class _FuneralState extends State<Funeral> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
-                            child: image != null
+                            child: intListImage != null
                                 ? Image(
-                                    image: image.image,
+                                    image: getImageFile().image,
                                     width: 300,
                                     height: 90,
                                   )
@@ -206,10 +344,7 @@ class _FuneralState extends State<Funeral> {
                           ),
                           InkWell(
                             onTap: () async {
-                              final _image = await FlutterWebImagePicker.getImage;
-                              setState(() {
-                                image = _image;
-                              });
+                              _startFilePicker();
                             },
                             child: DottedBorder(
                               dashPattern: [4, 4, 4, 4],
@@ -247,6 +382,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: nameController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -276,6 +412,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: buryDateController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -302,6 +439,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: buryTimeController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -331,6 +469,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextField(
+                            controller: burryAddressController,
                             maxLines: 3,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
@@ -359,6 +498,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: consolationDateController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -388,6 +528,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: menLocationController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -417,6 +558,7 @@ class _FuneralState extends State<Funeral> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: womenLocationController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,

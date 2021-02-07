@@ -1,6 +1,12 @@
+import 'dart:convert';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
+import 'dart:typed_data';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_image_picker/flutter_web_image_picker.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:myapp/api/Api.dart';
 
 class Weddings extends StatefulWidget {
   @override
@@ -9,6 +15,71 @@ class Weddings extends StatefulWidget {
 
 class _WeddingsState extends State<Weddings> {
   Image image;
+  Uint8List intListImage;
+  String imageString;
+
+  var option1Text;
+
+//father, groom, location, date, address, mobile, image;
+  final fatherController = TextEditingController();
+  final groomController = TextEditingController();
+  final locationController = TextEditingController();
+  final dateController = TextEditingController();
+  final addressController = TextEditingController();
+  final mobileController = TextEditingController();
+  var error = false;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    fatherController.dispose();
+    groomController.dispose();
+    locationController.dispose();
+    dateController.dispose();
+    addressController.dispose();
+    mobileController.dispose();
+    super.dispose();
+  }
+
+//method to load image and update `uploadedImage`
+
+  _startFilePicker() async {
+    InputElement uploadInput = FileUploadInputElement();
+    uploadInput.click();
+
+    uploadInput.onChange.listen((e) {
+      // read file content as dataURL
+      final files = uploadInput.files;
+      if (files.length == 1) {
+        final file = files[0];
+        FileReader reader = FileReader();
+
+        reader.onLoadEnd.listen((e) {
+          setState(() {
+            intListImage = reader.result;
+          });
+        });
+
+        reader.onError.listen((fileEvent) {
+          setState(() {
+            option1Text = "Some Error occured while reading the file";
+          });
+        });
+
+        reader.readAsArrayBuffer(file);
+      }
+    });
+  }
+
+  getImageFile() {
+    if (intListImage != null) {
+      imageString = base64.encode(intListImage);
+      return Image.memory(base64Decode(imageString));
+    } else {
+      print('Bytes not found');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,9 +107,9 @@ class _WeddingsState extends State<Weddings> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
-                            child: image != null
+                            child: intListImage != null
                                 ? Image(
-                                    image: image.image,
+                                    image: getImageFile().image,
                                     width: 300,
                                     height: 90,
                                   )
@@ -57,10 +128,7 @@ class _WeddingsState extends State<Weddings> {
                           ),
                           InkWell(
                             onTap: () async {
-                              final _image = await FlutterWebImagePicker.getImage;
-                              setState(() {
-                                image = _image;
-                              });
+                              _startFilePicker();
                             },
                             child: DottedBorder(
                               dashPattern: [4, 4, 4, 4],
@@ -98,6 +166,7 @@ class _WeddingsState extends State<Weddings> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: groomController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -127,6 +196,7 @@ class _WeddingsState extends State<Weddings> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: fatherController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -156,6 +226,7 @@ class _WeddingsState extends State<Weddings> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: dateController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -185,6 +256,7 @@ class _WeddingsState extends State<Weddings> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: mobileController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -214,6 +286,7 @@ class _WeddingsState extends State<Weddings> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: locationController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -243,6 +316,7 @@ class _WeddingsState extends State<Weddings> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextField(
+                            controller: addressController,
                             maxLines: 8,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
@@ -254,7 +328,46 @@ class _WeddingsState extends State<Weddings> {
                       ),
                       SizedBox(height: 25),
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          if (!Api.validateWedding(
+                            fatherController.text,
+                            groomController.text,
+                            dateController.text,
+                            mobileController.text,
+                            locationController.text,
+                            addressController.text,
+                            imageString,
+                          )) {
+                            EasyLoading.showError("Please fill all fields");
+                            return;
+                          }
+                          EasyLoading.show(status: 'Please Wait');
+                          var result = await Api.submitWedding(
+                            fatherController.text,
+                            groomController.text,
+                            dateController.text,
+                            mobileController.text,
+                            locationController.text,
+                            addressController.text,
+                            imageString,
+                          );
+                          if (result) {
+                            setState(() {
+                              image = null;
+                              intListImage = null;
+                              imageString = null;
+                              fatherController.text = '';
+                              groomController.text = '';
+                              dateController.text = '';
+                              mobileController.text = '';
+                              locationController.text = '';
+                              addressController.text = '';
+                            });
+                            EasyLoading.showSuccess('Wedding saved');
+                          } else {
+                            EasyLoading.showSuccess('Unable to save data');
+                          }
+                        },
                         child: Material(
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(10),

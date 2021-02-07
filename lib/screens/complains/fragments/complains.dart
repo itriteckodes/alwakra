@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/api/Api.dart';
+import 'package:myapp/models/Complain.dart';
 
 class Complains extends StatefulWidget {
   @override
@@ -7,6 +9,19 @@ class Complains extends StatefulWidget {
 
 class _ComplainsState extends State<Complains> {
   Image image;
+  List<Complain> complains = [];
+
+  _ComplainsState() {
+    this.getLatestArticles();
+  }
+
+  getLatestArticles() async {
+    var _complains = await Api.fetchComplains();
+    setState(() {
+      complains = _complains;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,119 +37,135 @@ class _ComplainsState extends State<Complains> {
           padding: EdgeInsets.all(30),
           child: Container(
             margin: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.blue.withOpacity(0.25), width: 2),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.blue.withOpacity(0.25), width: 2),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          width: 200,
+                          child: Text(
+                            'التاريخ',
+                            textAlign: TextAlign.right,
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                              fontFamily: 'Arabic',
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          child: Text(
+                            'المستخدم',
+                            textAlign: TextAlign.right,
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                              fontFamily: 'Arabic',
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 400,
+                          child: Text(
+                            'عنوان الخبر',
+                            textAlign: TextAlign.right,
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                              fontFamily: 'Arabic',
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: 200,
-                        child: Text(
-                          'التاريخ',
-                          textAlign: TextAlign.right,
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontFamily: 'Arabic',
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: Text(
-                          'المستخدم',
-                          textAlign: TextAlign.right,
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontFamily: 'Arabic',
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 600,
-                        child: Text(
-                          'عنوان الخبر',
-                          textAlign: TextAlign.right,
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontFamily: 'Arabic',
-                          ),
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.blue.withOpacity(0.125), width: 2),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: 200,
-                        child: Text(
-                          ' 25/11/22 17:05:35',
-                          textAlign: TextAlign.right,
-                          textDirection: TextDirection.ltr,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontFamily: 'Arabic',
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: Text(
-                          'ليتر فلدم',
-                          textAlign: TextAlign.right,
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontFamily: 'Arabic',
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 600,
-                        child: Text(
-                          'الحمراء ميدانيا ليتر فلدم ساموم',
-                          textAlign: TextAlign.right,
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontFamily: 'Arabic',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
+                  for (var article in complains) TableRow(article: article)
+                ],
+              ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TableRow extends StatelessWidget {
+  const TableRow({
+    Key key,
+    this.article,
+  }) : super(key: key);
+
+  final Complain article;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Colors.blue.withOpacity(0.25), width: 2),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              width: 200,
+              child: Text(
+                article.timestamp,
+                textAlign: TextAlign.right,
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontFamily: 'Arabic',
+                ),
+              ),
+            ),
+            Container(
+              width: 200,
+              child: Text(
+                article.userName,
+                textAlign: TextAlign.right,
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontFamily: 'Arabic',
+                ),
+              ),
+            ),
+            Container(
+              width: 400,
+              child: Text(
+                article.content,
+                textAlign: TextAlign.right,
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontFamily: 'Arabic',
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/api/Auth.dart';
 import 'package:myapp/layout/sidebar.dart';
 import 'package:myapp/screens/notifications/fragments/navbar.dart';
 import 'package:myapp/screens/notifications/fragments/notifications.dart';
@@ -12,6 +13,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Image image;
   @override
   Widget build(BuildContext context) {
+    // if (!Auth.check()) Navigator.pushNamed(context, '/login');
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(

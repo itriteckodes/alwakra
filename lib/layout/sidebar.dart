@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/api/Auth.dart';
 import 'package:myapp/helpers/active.dart';
 // import 'package:sizer/sizer.dart';
 
@@ -8,7 +9,7 @@ class SideBar extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var size = height * width;
-    var fontSize = size * 0.000013;
+    var fontSize = width * 0.01;
     var pl = size * 0.000013;
     var pb = size * 0.000013;
     var pr = size * 0.000013;
@@ -196,6 +197,41 @@ class SideBar extends StatelessWidget {
                   ),
                   Icon(
                     Icons.notifications_active_outlined,
+                    color: Colors.white,
+                    size: iconSize,
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(Active.route == 'logout' ? 0.25 : 0),
+            ),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(pl, pt, pr, pb),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: iconP),
+                    child: InkWell(
+                      onTap: () {
+                        Auth.logout();
+                        Active.route = 'login';
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      child: Text(
+                        'تسجيل خروج',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: fontSize,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.logout,
                     color: Colors.white,
                     size: iconSize,
                   )

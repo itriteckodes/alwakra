@@ -1,12 +1,12 @@
-class Photo {
+class Funeral {
   var sid, header, content, userName, date, approvalStatus;
 
-  Photo(article) {
+  Funeral(article) {
     sid = article['sid'] ?? " ";
     header = article['header'] ?? " ";
     content = article['content'] ?? " ";
-    userName = article['username'] ?? " ";
-    date = article['date'] ?? " ";
+    userName = article['name'] ?? " ";
+    date = article['timestamp'] ?? " ";
     approvalStatus = article['approval_status'] ?? " ";
   }
 

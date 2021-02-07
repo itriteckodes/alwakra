@@ -1,6 +1,13 @@
+import 'dart:convert';
+import 'dart:html';
+import 'dart:typed_data';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_web_image_picker/flutter_web_image_picker.dart';
+import 'package:myapp/api/Api.dart';
+import 'dart:io' as Io;
 
 class News extends StatefulWidget {
   @override
@@ -9,6 +16,62 @@ class News extends StatefulWidget {
 
 class _NewsState extends State<News> {
   Image image;
+  Uint8List intListImage;
+  String imageString;
+
+  var option1Text;
+
+  final headerController = TextEditingController();
+  final contentController = TextEditingController();
+  var error = false;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    headerController.dispose();
+    contentController.dispose();
+    super.dispose();
+  }
+
+//method to load image and update `uploadedImage`
+
+  _startFilePicker() async {
+    InputElement uploadInput = FileUploadInputElement();
+    uploadInput.click();
+
+    uploadInput.onChange.listen((e) {
+      // read file content as dataURL
+      final files = uploadInput.files;
+      if (files.length == 1) {
+        final file = files[0];
+        FileReader reader = FileReader();
+
+        reader.onLoadEnd.listen((e) {
+          setState(() {
+            intListImage = reader.result;
+          });
+        });
+
+        reader.onError.listen((fileEvent) {
+          setState(() {
+            option1Text = "Some Error occured while reading the file";
+          });
+        });
+
+        reader.readAsArrayBuffer(file);
+      }
+    });
+  }
+
+  getImageFile() {
+    if (intListImage != null) {
+      imageString = base64.encode(intListImage);
+      return Image.memory(base64Decode(imageString));
+    } else {
+      print('Bytes not found');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,9 +97,9 @@ class _NewsState extends State<News> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
-                            child: image != null
+                            child: intListImage != null
                                 ? Image(
-                                    image: image.image,
+                                    image: getImageFile().image,
                                     width: 300,
                                     height: 90,
                                   )
@@ -55,10 +118,12 @@ class _NewsState extends State<News> {
                           ),
                           InkWell(
                             onTap: () async {
-                              final _image = await FlutterWebImagePicker.getImage;
-                              setState(() {
-                                image = _image;
-                              });
+                              // final _image = await FlutterWebImagePicker.getImage;
+                              // setState(() {
+                              //   image = _image;
+                              // });
+
+                              await _startFilePicker();
                             },
                             child: DottedBorder(
                               dashPattern: [4, 4, 4, 4],
@@ -96,6 +161,7 @@ class _NewsState extends State<News> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: headerController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -125,6 +191,7 @@ class _NewsState extends State<News> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextField(
+                            controller: contentController,
                             maxLines: 8,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
@@ -136,7 +203,26 @@ class _NewsState extends State<News> {
                       ),
                       SizedBox(height: 25),
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          if (!Api.validateNews(headerController.text, contentController.text, imageString)) {
+                            EasyLoading.showError("Please fill all fields");
+                            return;
+                          }
+                          EasyLoading.show(status: 'Please Wait');
+                          var result = await Api.submitNews(headerController.text, contentController.text, imageString);
+                          if (result) {
+                            setState(() {
+                              image = null;
+                              intListImage = null;
+                              imageString = null;
+                              headerController.text = '';
+                              contentController.text = '';
+                            });
+                            EasyLoading.showSuccess('News saved');
+                          } else {
+                            EasyLoading.showSuccess('Unable to save data');
+                          }
+                        },
                         child: Material(
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(10),

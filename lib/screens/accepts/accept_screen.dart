@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/api/Api.dart';
+import 'package:myapp/api/Auth.dart';
 import 'package:myapp/layout/sidebar.dart';
 import 'package:myapp/screens/accepts/fragments/navbar.dart';
 import 'package:myapp/screens/accepts/fragments/news.dart';
@@ -18,6 +20,7 @@ class _AcceptScreenState extends State<AcceptScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // if (!Auth.check()) Navigator.pushNamed(context, '/login');
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(

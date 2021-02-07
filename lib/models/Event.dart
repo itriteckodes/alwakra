@@ -1,7 +1,7 @@
-class Photo {
+class Event {
   var sid, header, content, userName, date, approvalStatus;
 
-  Photo(article) {
+  Event(article) {
     sid = article['sid'] ?? " ";
     header = article['header'] ?? " ";
     content = article['content'] ?? " ";

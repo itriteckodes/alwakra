@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/accepts/fragments/events.dart';
-import 'package:myapp/screens/accepts/fragments/funeral.dart';
+import 'package:myapp/screens/accepts/fragments/funerals.dart';
 import 'package:myapp/screens/accepts/fragments/images.dart';
 import 'package:myapp/screens/accepts/fragments/news.dart';
 import 'package:myapp/screens/accepts/fragments/sports.dart';
-import 'package:myapp/screens/accepts/fragments/wedding.dart';
+import 'package:myapp/screens/accepts/fragments/weddings.dart';
 
 class Navbar extends StatefulWidget {
   final onSelectFragment;
@@ -81,7 +81,7 @@ class _NavbarState extends State<Navbar> {
                   padding: const EdgeInsets.only(right: 30, left: 30),
                   child: InkWell(
                     onTap: () {
-                      this.onSelectFragment(Funeral());
+                      this.onSelectFragment(Funerals());
                       setState(() {
                         active = "funeral";
                       });
@@ -104,7 +104,7 @@ class _NavbarState extends State<Navbar> {
                   padding: const EdgeInsets.only(right: 30, left: 30),
                   child: InkWell(
                     onTap: () {
-                      this.onSelectFragment(Wedding());
+                      this.onSelectFragment(Weddings());
                       setState(() {
                         active = "weddings";
                       });

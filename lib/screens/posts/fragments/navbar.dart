@@ -23,8 +23,8 @@ class _NavbarState extends State<Navbar> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var size = height * width;
-    var fontSize = size * 0.000020;
-    var fontSizeLarge = size * 0.000024;
+    var fontSize = width * 0.013;
+    var fontSizeLarge = width * 0.02;
     var pl = size * 0.000013;
     var pr = size * 0.000013;
 

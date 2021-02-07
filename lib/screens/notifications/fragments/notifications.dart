@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:myapp/api/Api.dart';
 
 class Notifications extends StatefulWidget {
   @override
@@ -6,7 +8,17 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
-  Image image;
+  final headerController = TextEditingController();
+  final contentController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    headerController.dispose();
+    contentController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,6 +61,7 @@ class _NotificationsState extends State<Notifications> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextFormField(
+                            controller: headerController,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -78,6 +91,7 @@ class _NotificationsState extends State<Notifications> {
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(5),
                           child: TextField(
+                            controller: contentController,
                             maxLines: 8,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
@@ -89,7 +103,19 @@ class _NotificationsState extends State<Notifications> {
                       ),
                       SizedBox(height: 25),
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          EasyLoading.show(status: 'Please Wait');
+                          var result = await Api.sendNotification(headerController.text, contentController.text);
+                          if (result) {
+                            setState(() {
+                              headerController.text = '';
+                              contentController.text = '';
+                            });
+                            EasyLoading.showSuccess('Notification sent');
+                          } else {
+                            EasyLoading.showSuccess('Unable to save data');
+                          }
+                        },
                         child: Material(
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(10),

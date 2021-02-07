@@ -1,7 +1,7 @@
-class Photo {
+class Sport {
   var sid, header, content, userName, date, approvalStatus;
 
-  Photo(article) {
+  Sport(article) {
     sid = article['sid'] ?? " ";
     header = article['header'] ?? " ";
     content = article['content'] ?? " ";

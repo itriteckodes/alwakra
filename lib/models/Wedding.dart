@@ -1,7 +1,7 @@
-class Photo {
+class Wedding {
   var sid, header, content, userName, date, approvalStatus;
 
-  Photo(article) {
+  Wedding(article) {
     sid = article['sid'] ?? " ";
     header = article['header'] ?? " ";
     content = article['content'] ?? " ";

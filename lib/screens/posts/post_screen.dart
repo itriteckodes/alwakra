@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:myapp/api/Auth.dart';
 import 'package:myapp/layout/sidebar.dart';
 import 'package:myapp/api/Api.dart';
 import 'package:myapp/screens/posts/fragments/navbar.dart';
@@ -18,11 +20,9 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   StatefulWidget selectedFragment = News();
 
-  // Await the http get response, then decode the json-formatted response.
-
   @override
   Widget build(BuildContext context) {
-    // PostScreen.getData();
+    // if (!Auth.check()) Navigator.pushNamed(context, '/login');
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -35,20 +35,6 @@ class _PostScreenState extends State<PostScreen> {
               width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
                 children: [
-                  InkWell(
-                    onTap: () async {
-                      Api.getData();
-                    },
-                    child: DottedBorder(
-                      dashPattern: [4, 4, 4, 4],
-                      color: Colors.blue[400],
-                      strokeWidth: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text('Test Button'),
-                      ),
-                    ),
-                  ),
                   Container(
                     decoration: BoxDecoration(color: Colors.white),
                     height: 50,
@@ -66,9 +52,9 @@ class _PostScreenState extends State<PostScreen> {
                   Expanded(
                     child: SizedBox(
                       height: 500.0,
-                      child: new ListView(
+                      child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
-                        children: [selectedFragment],
+                        child: selectedFragment,
                       ),
                     ),
                   ),

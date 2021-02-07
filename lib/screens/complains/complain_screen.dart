@@ -14,7 +14,6 @@ class ComplainScreen extends StatefulWidget {
 
 class _ComplainScreenState extends State<ComplainScreen> {
   StatefulWidget selectedFragment = Suggestions();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
