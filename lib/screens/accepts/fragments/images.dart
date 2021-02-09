@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/api/Api.dart';
 import 'package:myapp/models/Photo.dart';
+import 'package:myapp/helpers/screen.dart';
 
 class Images extends StatefulWidget {
   @override
@@ -25,92 +26,75 @@ class _ImagesState extends State<Images> {
 
   @override
   Widget build(BuildContext context) {
+    Screen().init(context);
+
     return Padding(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(0),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.85,
-        height: MediaQuery.of(context).size.height * 0.75,
+        height: Screen.isMobile() || Screen.isLandScape() || Screen.isTablet() ? Screen.yBlock * 74 : Screen.yBlock * 80,
+        width: Screen.isMobile() || Screen.isLandScape() || Screen.isTablet() ? Screen.width : Screen.xBlock * 80,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Padding(
           padding: EdgeInsets.all(30),
-          child: Container(
-            margin: EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.blue.withOpacity(0.25), width: 2),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.blue.withOpacity(0.25), width: 2),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: Screen.smCol(),
+                        child: Text(
+                          'الحالة',
+                          textAlign: TextAlign.right,
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(color: Colors.black, fontSize: Screen.headFont(), fontFamily: 'Arabic', fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          width: 200,
-                          child: Text(
-                            'الحالة',
-                            textAlign: TextAlign.right,
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 25,
-                              fontFamily: 'Arabic',
-                            ),
-                          ),
+                      Container(
+                        width: Screen.smCol(),
+                        child: Text(
+                          'التاريخ',
+                          textAlign: TextAlign.right,
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(color: Colors.black, fontSize: Screen.headFont(), fontFamily: 'Arabic', fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          width: 200,
-                          child: Text(
-                            'التاريخ',
-                            textAlign: TextAlign.right,
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 25,
-                              fontFamily: 'Arabic',
-                            ),
-                          ),
+                      ),
+                      Container(
+                        width: Screen.smCol(),
+                        child: Text(
+                          'المستخدم',
+                          textAlign: TextAlign.right,
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(color: Colors.black, fontSize: Screen.headFont(), fontFamily: 'Arabic', fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          width: 200,
-                          child: Text(
-                            'المستخدم',
-                            textAlign: TextAlign.right,
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 25,
-                              fontFamily: 'Arabic',
-                            ),
-                          ),
+                      ),
+                      Container(
+                        width: Screen.lgCol(),
+                        child: Text(
+                          'عنوان الخبر',
+                          textAlign: TextAlign.right,
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(color: Colors.black, fontSize: Screen.headFont(), fontFamily: 'Arabic', fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          width: 400,
-                          child: Text(
-                            'عنوان الخبر',
-                            textAlign: TextAlign.right,
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 25,
-                              fontFamily: 'Arabic',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  for (var article in photos) TableRow(article: article)
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                for (var article in photos) TableRow(article: article)
+              ],
             ),
           ),
         ),
@@ -141,7 +125,7 @@ class TableRow extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Container(
-              width: 200,
+              width: Screen.smCol(),
               child: Text(
                 article.approvalStatus,
                 textAlign: TextAlign.right,
@@ -154,7 +138,7 @@ class TableRow extends StatelessWidget {
               ),
             ),
             Container(
-              width: 200,
+              width: Screen.smCol(),
               child: Text(
                 article.date,
                 textAlign: TextAlign.right,
@@ -167,7 +151,7 @@ class TableRow extends StatelessWidget {
               ),
             ),
             Container(
-              width: 200,
+              width: Screen.smCol(),
               child: Text(
                 article.userName,
                 textAlign: TextAlign.right,
@@ -180,7 +164,7 @@ class TableRow extends StatelessWidget {
               ),
             ),
             Container(
-              width: 400,
+              width: Screen.lgCol(),
               child: Text(
                 article.content,
                 textAlign: TextAlign.right,

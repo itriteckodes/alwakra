@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/helpers/screen.dart';
 import 'package:myapp/layout/sidebar.dart';
 import 'package:myapp/screens/services/fragments/navbar.dart';
 import 'package:myapp/screens/services/fragments/services_form.dart';
@@ -15,6 +16,7 @@ class ServiceScreen extends StatefulWidget {
 class _ServiceScreenState extends State<ServiceScreen> {
   @override
   Widget build(BuildContext context) {
+    Screen().init(context);
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -24,7 +26,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.85,
+              width: Screen.isMobile()||Screen.isLandScape()||Screen.isTablet() ? Screen.width : Screen.xBlock * 85,
               child: Column(
                 children: [
                   Container(
@@ -35,19 +37,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   SizedBox(
                     height: 50,
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 500.0,
-                      child: new ListView(
-                        scrollDirection: Axis.vertical,
-                        children: [ServicesForm()],
-                      ),
+                  Container(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: ServicesForm(),
                     ),
                   ),
                 ],
               ),
             ),
-            SideBar(),
+            if (!Screen.isMobile() && !Screen.isLandScape() && !Screen.isTablet()) SideBar(),
           ],
         ),
       ),

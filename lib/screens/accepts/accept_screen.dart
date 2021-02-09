@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/api/Api.dart';
-import 'package:myapp/api/Auth.dart';
 import 'package:myapp/layout/sidebar.dart';
 import 'package:myapp/screens/accepts/fragments/navbar.dart';
 import 'package:myapp/screens/accepts/fragments/news.dart';
-// import 'package:sizer/sizer.dart';
+import 'package:myapp/helpers/screen.dart';
 
 class AcceptScreen extends StatefulWidget {
   AcceptScreen({Key key, this.title}) : super(key: key);
@@ -20,7 +18,8 @@ class _AcceptScreenState extends State<AcceptScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // if (!Auth.check()) Navigator.pushNamed(context, '/login');
+    Screen().init(context);
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -30,12 +29,12 @@ class _AcceptScreenState extends State<AcceptScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(color: Colors.white),
                     height: 50,
+                    width: Screen.isMobile() || Screen.isLandScape() || Screen.isTablet() ? Screen.width : Screen.xBlock * 85,
                   ),
                   Navbar(
                     onSelectFragment: (mSelectedFragment) => {
@@ -47,19 +46,14 @@ class _AcceptScreenState extends State<AcceptScreen> {
                   SizedBox(
                     height: 50,
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 500.0,
-                      child: new ListView(
-                        scrollDirection: Axis.vertical,
-                        children: [selectedFragment],
-                      ),
-                    ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: selectedFragment,
                   ),
                 ],
               ),
             ),
-            SideBar(),
+            if (!Screen.isMobile() && !Screen.isLandScape() && !Screen.isTablet()) SideBar(),
           ],
         ),
       ),

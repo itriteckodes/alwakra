@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -9,10 +8,12 @@ import 'package:myapp/api/ApiService.dart';
 import 'package:myapp/api/DeleteService.dart';
 import 'package:myapp/api/Helper.dart';
 import 'package:myapp/api/UpdateService.dart';
+import 'package:myapp/helpers/screen.dart';
 import 'package:myapp/models/Content.dart';
 import 'package:myapp/models/Service.dart';
 import 'package:myapp/models/SubCategory1.dart';
 import 'package:myapp/models/SubCategory2.dart';
+
 
 class ServicesForm extends StatefulWidget {
   @override
@@ -23,7 +24,9 @@ class _ServicesFormState extends State<ServicesForm> {
   List<Service> services = [];
   List<SubCategory1> subCategories1 = [];
   List<SubCategory2> subCategories2 = [];
+
   Content content;
+
   var test;
 
   _ServicesFormState() {
@@ -59,6 +62,8 @@ class _ServicesFormState extends State<ServicesForm> {
     });
   }
 
+  final addSerivceModal = () => {};
+
   Image image;
 
   final contentController = TextEditingController();
@@ -70,310 +75,275 @@ class _ServicesFormState extends State<ServicesForm> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    var size = height * width;
-
-    var capSize = size * 0.00016 - 40;
-    var iconSize = size * 0.000013;
-
-    var mainPadding = width * 0.015;
-    var mainMargin = width * 0.010;
-    var containerWidth = width * 0.25;
-    var spacing = width * 0.020;
-
-    bool screenIsNotLarge = MediaQuery.of(context).size.width < 1350;
-    return Padding(
-      padding: const EdgeInsets.all(32),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.85,
-        height: MediaQuery.of(context).size.height * 0.75,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(mainPadding),
-          child: Container(
-            margin: EdgeInsets.all(mainMargin),
+  Widget contentBox({width, rows, modal, buttonPadding}) {
+    return Stack(
+      children: [
+        Container(
+          height: 300,
+          width: width,
+          margin: EdgeInsets.only(
+            top: 50.0,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blue.withOpacity(1), width: 3),
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(15),
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  Flex(
-                    direction: screenIsNotLarge ? Axis.vertical : Axis.horizontal,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            height: 300,
-                            width: containerWidth,
-                            child: Padding(
-                              padding: EdgeInsets.all(spacing),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue.withOpacity(1), width: 3),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        for (var article in subCategories2)
-                                          SubCategory2Row(
-                                            getSubCategories2: getSubCategories2,
-                                            getContent: fetchContent,
-                                            article: article,
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 50,
-                            top: 0,
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AddSubCategory2(
-                                      getSubCategories2: getSubCategories2,
-                                    );
-                                  },
-                                );
-                              },
-                              child: Material(
-                                elevation: 5.0,
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    color: Colors.blue,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    child: Icon(
-                                      FontAwesomeIcons.plus,
-                                      size: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            height: 300,
-                            width: containerWidth,
-                            child: Padding(
-                              padding: EdgeInsets.all(spacing),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue.withOpacity(1), width: 3),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        for (var article in subCategories1)
-                                          SubCategory1Row(
-                                            getSubCategories1: getSubCategories1,
-                                            getSubCategories2: getSubCategories2,
-                                            article: article,
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 50,
-                            top: 0,
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AddSubCategory1(
-                                      getSubCategories1: getSubCategories1,
-                                    );
-                                  },
-                                );
-                              },
-                              child: Material(
-                                elevation: 5.0,
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    color: Colors.blue,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    child: Icon(
-                                      FontAwesomeIcons.plus,
-                                      size: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            height: 300,
-                            width: containerWidth,
-                            child: Padding(
-                              padding: EdgeInsets.all(spacing),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue.withOpacity(1), width: 3),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: SingleChildScrollView(
-                                    child: Column(children: [
-                                      for (var article in services)
-                                        ServiceRow(
-                                          getServices: getServices,
-                                          getSubCategories1: getSubCategories1,
-                                          article: article,
-                                        ),
-                                    ]),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 50,
-                            top: 0,
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AddCategory(getServices: getServices);
-                                  },
-                                );
-                              },
-                              child: Material(
-                                elevation: 5.0,
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    color: Colors.blue,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    child: Icon(
-                                      FontAwesomeIcons.plus,
-                                      size: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                children: rows,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          left: buttonPadding,
+          top: 35.0,
+          child: InkWell(
+            onTap: () {
+              modal();
+            },
+            child: Material(
+              elevation: 5.0,
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.blue,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Icon(
+                    FontAwesomeIcons.plus,
+                    size: 20,
+                    color: Colors.white,
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Container(
-                        height: 300,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue, width: 3),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: TextFormField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          controller: contentController,
-                          textAlign: TextAlign.center,
-                          textDirection: TextDirection.rtl,
-                          decoration: InputDecoration(
-                            hintText: 'أدخل المحتوى هنا',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(10),
-                          ),
-                        )),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget boxesRow({spacing}) {
+    if (Screen.isMobile() || Screen.isLandScape() || Screen.isTablet())
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          contentBox(
+            width: Screen.xBlock * 90,
+            rows: [
+              for (var article in services)
+                ServiceRow(
+                  getServices: getServices,
+                  getSubCategories1: getSubCategories1,
+                  article: article,
+                ),
+            ],
+            modal: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddCategory(getServices: getServices);
+              },
+            ),
+            buttonPadding: Screen.xBlock * 10,
+          ),
+          contentBox(
+              width: Screen.xBlock * 90,
+              rows: [
+                for (var article in subCategories1)
+                  SubCategory1Row(
+                    getSubCategories1: getSubCategories1,
+                    getSubCategories2: getSubCategories2,
+                    article: article,
                   ),
-                  Material(
-                    child: InkWell(
-                      onTap: () async {
-                        if (!ApiService.validateContent(contentController.text)) {
-                          return;
-                        }
-                        EasyLoading.show(status: 'Please Wait');
-                        var result = await ApiService.addContent(contentController.text);
-                        if (result) {
-                          EasyLoading.showSuccess('Content updated');
-                        } else {
-                          EasyLoading.showError('Unable to save data');
-                        }
-                      },
-                      child: Material(
-                        elevation: 5.0,
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.blue,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(60, 6, 60, 6),
-                            child: Text(
-                              'تحديث',
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Arabic',
-                              ),
-                            ),
-                          ),
+              ],
+              modal: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AddSubCategory1(
+                        getSubCategories1: getSubCategories1,
+                      );
+                    },
+                  ),
+              buttonPadding: Screen.xBlock * 10),
+          contentBox(
+            width: Screen.xBlock * 90,
+            rows: [
+              for (var article in subCategories2)
+                SubCategory2Row(
+                  getSubCategories2: getSubCategories2,
+                  getContent: fetchContent,
+                  article: article,
+                ),
+            ],
+            modal: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddSubCategory2(
+                  getSubCategories2: getSubCategories2,
+                );
+              },
+            ),
+            buttonPadding: Screen.xBlock * 10,
+          ),
+        ],
+      );
+    else
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          contentBox(
+            width: Screen.xBlock * 25,
+            rows: [
+              for (var article in subCategories2)
+                SubCategory2Row(
+                  getSubCategories2: getSubCategories2,
+                  getContent: fetchContent,
+                  article: article,
+                ),
+            ],
+            modal: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddSubCategory2(
+                  getSubCategories2: getSubCategories2,
+                );
+              },
+            ),
+            buttonPadding: 25,
+          ),
+          SizedBox(
+            width : Screen.xBlock * 2
+          ),
+          contentBox(
+            width: Screen.xBlock * 25,
+            rows: [
+              for (var article in subCategories1)
+                SubCategory1Row(
+                  getSubCategories1: getSubCategories1,
+                  getSubCategories2: getSubCategories2,
+                  article: article,
+                ),
+            ],
+            modal: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddSubCategory1(
+                  getSubCategories1: getSubCategories1,
+                );
+              },
+            ),
+            buttonPadding: 25,
+          ),
+          SizedBox(
+            width : Screen.xBlock * 2
+          ),
+          contentBox(
+            width: Screen.xBlock * 25,
+            rows: [
+              for (var article in services)
+                ServiceRow(
+                  getServices: getServices,
+                  getSubCategories1: getSubCategories1,
+                  article: article,
+                ),
+            ],
+            modal: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddCategory(getServices: getServices);
+              },
+            ),
+            buttonPadding: 25,
+          ),
+        ],
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Screen.isMobile()||Screen.isLandScape()||Screen.isTablet() ? Screen.yBlock * 74 : Screen.yBlock * 80,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            boxesRow(
+              spacing: 50,
+            ),
+            Padding(
+              padding: EdgeInsets.all(30),
+              child: Container(
+                  height: 300,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue, width: 3),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: contentController,
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                    decoration: InputDecoration(
+                      hintText: 'أدخل المحتوى هنا',
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.all(10),
+                    ),
+                  )),
+            ),
+            Material(
+              child: InkWell(
+                onTap: () async {
+                  if (!ApiService.validateContent(contentController.text)) {
+                    return;
+                  }
+                  EasyLoading.show(status: 'Please Wait');
+                  var result = await ApiService.addContent(contentController.text);
+                  if (result) {
+                    EasyLoading.showSuccess('Content updated');
+                  } else {
+                    EasyLoading.showError('Unable to save data');
+                  }
+                },
+                child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.blue,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(60, 6, 60, 6),
+                      child: Text(
+                        'تحديث',
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'Arabic',
                         ),
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+            SizedBox(height: 20),
+          ],
         ),
       ),
     );
@@ -393,14 +363,6 @@ class ServiceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    var size = height * width;
-
-    var capSize = width * 0.1;
-    var iconSize = width * 0.013;
-    var fontSize = width * 0.01;
-
     return InkWell(
       onTap: () {
         ApiService.selectedCategory = article;
@@ -433,13 +395,10 @@ class ServiceRow extends StatelessWidget {
                       EasyLoading.showError('Unable to delete');
                     }
                   },
-                  child: Container(
-                    width: iconSize,
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                      size: iconSize,
-                    ),
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                    size: Screen.iconSize(),
                   ),
                 ),
                 InkWell(
@@ -451,24 +410,21 @@ class ServiceRow extends StatelessWidget {
                       },
                     );
                   },
-                  child: Container(
-                    width: iconSize,
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                      size: iconSize,
-                    ),
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                    size: Screen.iconSize(),
                   ),
                 ),
                 Container(
-                  width: capSize,
+                  width: Screen.rowFontWidth(),
                   child: Text(
                     article.main,
                     textAlign: TextAlign.right,
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: fontSize,
+                      fontSize: Screen.rowFont(),
                       fontFamily: 'Arabic',
                     ),
                   ),
@@ -496,14 +452,6 @@ class SubCategory1Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    var size = height * width;
-
-    var capSize = width * 0.1;
-    var iconSize = width * 0.013;
-    var fontSize = width * 0.01;
-
     return InkWell(
       onTap: () {
         ApiService.selectedSubCategory1 = article;
@@ -537,11 +485,11 @@ class SubCategory1Row extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    width: iconSize,
+                    width: Screen.iconSize(),
                     child: Icon(
                       Icons.delete,
                       color: Colors.red,
-                      size: iconSize,
+                      size: Screen.iconSize(),
                     ),
                   ),
                 ),
@@ -558,23 +506,23 @@ class SubCategory1Row extends StatelessWidget {
                     );
                   },
                   child: Container(
-                    width: iconSize,
+                    width: Screen.iconSize(),
                     child: Icon(
                       Icons.edit,
                       color: Colors.black,
-                      size: iconSize,
+                      size: Screen.iconSize(),
                     ),
                   ),
                 ),
                 Container(
-                  width: capSize,
+                  width: Screen.rowFontWidth(),
                   child: Text(
                     article.sub1,
                     textAlign: TextAlign.right,
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: fontSize,
+                      fontSize: Screen.rowFont(),
                       fontFamily: 'Arabic',
                     ),
                   ),
@@ -602,14 +550,6 @@ class SubCategory2Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    var size = height * width;
-
-    var capSize = width * 0.1;
-    var iconSize = width * 0.013;
-    var fontSize = width * 0.01;
-
     return InkWell(
       onTap: () {
         ApiService.selectedSubCategory2 = article;
@@ -643,11 +583,11 @@ class SubCategory2Row extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    width: iconSize,
+                    width: Screen.iconSize(),
                     child: Icon(
                       Icons.delete,
                       color: Colors.red,
-                      size: iconSize,
+                      size: Screen.iconSize(),
                     ),
                   ),
                 ),
@@ -664,23 +604,23 @@ class SubCategory2Row extends StatelessWidget {
                     );
                   },
                   child: Container(
-                    width: iconSize,
+                    width: Screen.iconSize(),
                     child: Icon(
                       Icons.edit,
                       color: Colors.black,
-                      size: iconSize,
+                      size: Screen.iconSize(),
                     ),
                   ),
                 ),
                 Container(
-                  width: capSize,
+                  width: Screen.rowFontWidth(),
                   child: Text(
                     article.sub2,
                     textAlign: TextAlign.right,
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: fontSize,
+                      fontSize: Screen.rowFont(),
                       fontFamily: 'Arabic',
                     ),
                   ),
@@ -718,20 +658,14 @@ class _AddCategoryState extends State<AddCategory> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    // var size = height * width;
-
-    // var fontSize = size * 0.000013;
-    var pl = width * 0.2;
-    var pb = height * 0.2;
-    var pr = width * 0.2;
-    var pt = height * 0.2;
-    // var iconP = width * 0.005;
-    // var iconSize = width * 0.015;
     return Container(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(pl, pt, pr, pb),
+        padding: EdgeInsets.fromLTRB(
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -746,19 +680,15 @@ class _AddCategoryState extends State<AddCategory> {
                 style: TextStyle(
                   backgroundColor: Colors.white,
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: Screen.h2(),
                   fontFamily: "Arabic",
                 ),
               ),
               SizedBox(
-                height: 20,
-              ),
-              // error ?? Error(),
-              SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
-                width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
+                width: Screen.modalInput(),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(5),
@@ -854,20 +784,14 @@ class _UpdateCategoryState extends State<UpdateCategory> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    // var size = height * width;
-
-    // var fontSize = size * 0.000013;
-    var pl = width * 0.2;
-    var pb = height * 0.2;
-    var pr = width * 0.2;
-    var pt = height * 0.2;
-    // var iconP = width * 0.005;
-    // var iconSize = width * 0.015;
     return Container(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(pl, pt, pr, pb),
+        padding: EdgeInsets.fromLTRB(
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -882,19 +806,15 @@ class _UpdateCategoryState extends State<UpdateCategory> {
                 style: TextStyle(
                   backgroundColor: Colors.white,
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: Screen.h2(),
                   fontFamily: "Arabic",
                 ),
               ),
               SizedBox(
-                height: 20,
-              ),
-              // error ?? Error(),
-              SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
-                width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
+                width: Screen.modalInput(),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(5),
@@ -986,20 +906,14 @@ class _AddSubCategory1State extends State<AddSubCategory1> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    // var size = height * width;
-
-    // var fontSize = size * 0.000013;
-    var pl = width * 0.2;
-    var pb = height * 0.2;
-    var pr = width * 0.2;
-    var pt = height * 0.2;
-    // var iconP = width * 0.005;
-    // var iconSize = width * 0.015;
     return Container(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(pl, pt, pr, pb),
+        padding: EdgeInsets.fromLTRB(
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -1014,18 +928,15 @@ class _AddSubCategory1State extends State<AddSubCategory1> {
                 style: TextStyle(
                   backgroundColor: Colors.white,
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: Screen.h2(),
                   fontFamily: "Arabic",
                 ),
               ),
               SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
-                width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
+                width: Screen.modalInput(),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(5),
@@ -1120,20 +1031,14 @@ class _UpdateSubCategory1State extends State<UpdateSubCategory1> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    // var size = height * width;
-
-    // var fontSize = size * 0.000013;
-    var pl = width * 0.2;
-    var pb = height * 0.2;
-    var pr = width * 0.2;
-    var pt = height * 0.2;
-    // var iconP = width * 0.005;
-    // var iconSize = width * 0.015;
     return Container(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(pl, pt, pr, pb),
+        padding: EdgeInsets.fromLTRB(
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -1148,19 +1053,15 @@ class _UpdateSubCategory1State extends State<UpdateSubCategory1> {
                 style: TextStyle(
                   backgroundColor: Colors.white,
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: Screen.h2(),
                   fontFamily: "Arabic",
                 ),
               ),
               SizedBox(
-                height: 20,
-              ),
-              // error ?? Error(),
-              SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
-                width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
+                width: Screen.modalInput(),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(5),
@@ -1252,20 +1153,14 @@ class _AddSubCategory2State extends State<AddSubCategory2> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    // var size = height * width;
-
-    // var fontSize = size * 0.000013;
-    var pl = width * 0.2;
-    var pb = height * 0.2;
-    var pr = width * 0.2;
-    var pt = height * 0.2;
-    // var iconP = width * 0.005;
-    // var iconSize = width * 0.015;
     return Container(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(pl, pt, pr, pb),
+        padding: EdgeInsets.fromLTRB(
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -1280,19 +1175,15 @@ class _AddSubCategory2State extends State<AddSubCategory2> {
                 style: TextStyle(
                   backgroundColor: Colors.white,
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: Screen.h2(),
                   fontFamily: "Arabic",
                 ),
               ),
               SizedBox(
-                height: 20,
-              ),
-              // error ?? Error(),
-              SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
-                width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
+                width: Screen.modalInput(),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(5),
@@ -1387,20 +1278,14 @@ class _UpdateSubCategory2State extends State<UpdateSubCategory2> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    // var size = height * width;
-
-    // var fontSize = size * 0.000013;
-    var pl = width * 0.2;
-    var pb = height * 0.2;
-    var pr = width * 0.2;
-    var pt = height * 0.2;
-    // var iconP = width * 0.005;
-    // var iconSize = width * 0.015;
     return Container(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(pl, pt, pr, pb),
+        padding: EdgeInsets.fromLTRB(
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+          Screen.modalPaddingX(),
+          Screen.modalPaddingY(),
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -1410,24 +1295,20 @@ class _UpdateSubCategory2State extends State<UpdateSubCategory2> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "تحديث فئة فرعية واحدة",
+                "تحديث فئة فرعية الثانية",
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
                   backgroundColor: Colors.white,
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: Screen.h2(),
                   fontFamily: "Arabic",
                 ),
               ),
               SizedBox(
-                height: 20,
-              ),
-              // error ?? Error(),
-              SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
-                width: (MediaQuery.of(context).size.width * (0.85 * 0.40)),
+                width: Screen.modalInput(),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(5),

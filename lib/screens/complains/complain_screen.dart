@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myapp/layout/sidebar.dart';
 import 'package:myapp/screens/complains/fragments/navbar.dart';
 import 'package:myapp/screens/complains/fragments/suggestions.dart';
+import 'package:myapp/helpers/screen.dart';
+
 
 class ComplainScreen extends StatefulWidget {
   ComplainScreen({Key key, this.title}) : super(key: key);
@@ -16,6 +18,8 @@ class _ComplainScreenState extends State<ComplainScreen> {
   StatefulWidget selectedFragment = Suggestions();
   @override
   Widget build(BuildContext context) {
+    Screen().init(context);
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -25,12 +29,12 @@ class _ComplainScreenState extends State<ComplainScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(color: Colors.white),
                     height: 50,
+                    width: Screen.isMobile() || Screen.isLandScape() || Screen.isTablet() ? Screen.width : Screen.xBlock * 85,
                   ),
                   Navbar(
                     onSelectFragment: (mSelectedFragment) => {
@@ -42,19 +46,14 @@ class _ComplainScreenState extends State<ComplainScreen> {
                   SizedBox(
                     height: 50,
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 500.0,
-                      child: new ListView(
-                        scrollDirection: Axis.vertical,
-                        children: [selectedFragment],
-                      ),
-                    ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: selectedFragment,
                   ),
                 ],
               ),
             ),
-            SideBar(),
+           if (!Screen.isMobile() && !Screen.isLandScape() && !Screen.isTablet()) SideBar(),
           ],
         ),
       ),

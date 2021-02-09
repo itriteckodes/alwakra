@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/api/Auth.dart';
 import 'package:myapp/layout/sidebar.dart';
 import 'package:myapp/screens/notifications/fragments/navbar.dart';
 import 'package:myapp/screens/notifications/fragments/notifications.dart';
+import 'package:myapp/helpers/screen.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -13,7 +13,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Image image;
   @override
   Widget build(BuildContext context) {
-    // if (!Auth.check()) Navigator.pushNamed(context, '/login');
+    Screen().init(context);
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -23,29 +24,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(color: Colors.white),
                     height: 50,
+                    width: Screen.isMobile() || Screen.isLandScape() || Screen.isTablet() ? Screen.width : Screen.xBlock * 85,
                   ),
                   Navbar(),
                   SizedBox(
                     height: 50,
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 500.0,
-                      child: new ListView(
-                        scrollDirection: Axis.vertical,
-                        children: [Notifications()],
-                      ),
-                    ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Notifications(),
                   ),
                 ],
               ),
             ),
+            if(!Screen.isMobile() && !Screen.isLandScape() && !Screen.isTablet())
             SideBar(),
           ],
         ),

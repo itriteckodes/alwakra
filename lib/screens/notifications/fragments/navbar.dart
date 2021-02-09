@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myapp/helpers/screen.dart';
+import 'package:myapp/layout/sidebarpop.dart';
 // import 'package:myapp/screens/posts/fragments/events.dart';
 // import 'package:myapp/screens/posts/fragments/funeral.dart';
 // import 'package:myapp/screens/posts/fragments/images.dart';
@@ -15,21 +18,16 @@ class _NavbarState extends State<Navbar> {
   Image image;
   @override
   Widget build(BuildContext context) {
+    Screen().init(context);
     return Container(
+      width: Screen.isMobile() || Screen.isLandScape() || Screen.isTablet() ? Screen.width : Screen.xBlock * 85,
       decoration: BoxDecoration(color: Colors.white),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.85 * 0.75,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [],
-            ),
-          ),
-          Container(
             child: Padding(
-              padding: const EdgeInsets.only(right: 30, left: 30),
+              padding: const EdgeInsets.only(right: 10, left: 10),
               child: InkWell(
                 onTap: () {},
                 child: Text(
@@ -37,13 +35,32 @@ class _NavbarState extends State<Navbar> {
                   textDirection: TextDirection.rtl,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 40,
+                    fontSize: Screen.navTitle(),
                     fontFamily: "Arabic",
                   ),
                 ),
               ),
             ),
           ),
+           if (Screen.isMobile() || Screen.isLandScape() || Screen.isTablet())
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10, left: 10),
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SideBarPop();
+                        });
+                  },
+                  child: Icon(
+                    FontAwesomeIcons.ellipsisV,
+                    size: Screen.navTitle(),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

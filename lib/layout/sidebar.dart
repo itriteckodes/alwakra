@@ -132,7 +132,7 @@ class SideBar extends StatelessWidget {
                     color: Colors.white,
                     size: iconSize,
                   )
-                ],
+                ], 
               ),
             ),
           ),
