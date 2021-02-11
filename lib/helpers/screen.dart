@@ -19,6 +19,47 @@ class Screen {
     return height * width;
   }
 
+  static double thumbX() {
+    if (isMobile())
+      return 30;
+    else if (isLandScape())
+      return 35;
+    else if (isTablet())
+      return 40;
+    else if (isDesktop())
+      return 45;
+    else
+      return 50;
+  }
+  
+  static double thumbY() {
+    if (isMobile())
+      return 20;
+    else if (isLandScape())
+      return 25;
+    else if (isTablet())
+      return 25;
+    else if (isDesktop())
+      return 30;
+    else
+      return 30;
+  }
+  
+  static double bigButtonFont() {
+    if (isMobile())
+      return 20;
+    else if (isLandScape())
+      return 22;
+    else if (isTablet())
+      return 25;
+    else if (isDesktop())
+      return 30;
+    else
+      return 35;
+  }
+
+
+
   static double smCol() {
     if (isMobile())
       return xBlock * 18;
@@ -179,9 +220,9 @@ class Screen {
     else if (isTablet())
       return xBlock * 65;
     else if (isDesktop())
-      return xBlock * 30;
+      return xBlock * 40;
     else
-      return xBlock * 30;
+      return xBlock * 40;
   }
 
   static double imageBoxWidth() {
@@ -228,11 +269,19 @@ class Screen {
   }
 
   static double modalPaddingX() {
-    return yBlock * 5;
+    return xBlock * 5;
   }
 
   static double modalPaddingY() {
     return yBlock * 20;
+  }
+
+  static double editPaddingX() {
+    return xBlock * 5;
+  }
+
+  static double editPaddingY() {
+    return yBlock * 5;
   }
 
   static bool isMobile() {

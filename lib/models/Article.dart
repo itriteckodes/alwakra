@@ -1,5 +1,5 @@
 class Article {
-  var sid, header, content, userName, date, approvalStatus;
+  var sid, header, content, userName, date, approvalStatus, images;
 
   Article(article) {
     sid = article['sid'] ?? " ";
@@ -8,6 +8,7 @@ class Article {
     userName = article['username'] ?? " ";
     date = article['date'] ?? " ";
     approvalStatus = article['approval_status'] ?? " ";
+    images = article['images'] ?? " ";
   }
 
   @override
