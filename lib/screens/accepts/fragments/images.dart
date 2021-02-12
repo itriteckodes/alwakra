@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/api/Api.dart';
 import 'package:myapp/models/Photo.dart';
 import 'package:myapp/helpers/screen.dart';
+import 'package:myapp/screens/accepts/fragments/edit_image.dart';
 
 class Images extends StatefulWidget {
   @override
@@ -124,16 +125,26 @@ class TableRow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              width: Screen.smCol(),
-              child: Text(
-                article.approvalStatus,
-                textAlign: TextAlign.right,
-                textDirection: TextDirection.rtl,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                  fontFamily: 'Arabic',
+            InkWell(
+              onTap: () {
+                showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return EditImage(article: article,);
+                      },
+                    );
+              },
+              child: Container(
+                width: Screen.smCol(),
+                child: Text(
+                  article.approvalStatus,
+                  textAlign: TextAlign.right,
+                  textDirection: TextDirection.rtl,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontFamily: 'Arabic',
+                  ),
                 ),
               ),
             ),

@@ -29,7 +29,9 @@ type: get_pending_approval
 sample output
 ---------------------------------------------------------
 
-{"photos":[{"sid":"eacd22fb33f958cbdf5d346d15652a8d","header":"test","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 09:12:29","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"},{"sid":"361e2f637184e69c723e76b12f2f0be0","header":"test photo","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 11:50:42","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"},{"sid":"e1bb04723720e89e019fbf0c00ad0f32","header":"test photo 2","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 11:51:45","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"},{"sid":"54884a6da584cc554b297092fa50c31b","header":"new test","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 11:54:33","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"}],"weddings":[{"sid":"594e3e6ae18c79933dd2e8b59e605fb1","header":"أفراح البوعينين","groom":"علي محمد علي الجابر البوعينين","father":"ابناءمحمد علي الجابر البوعينين","date":"2019/06/22","location":"الموقع","address":"قاعات الاحتفالات الوكرة قاعة رفم 5","mobile":"للإستفسار","username":"khater","timestamp":"2019/06/21 23:02:27","image":"http://www.alwakra.com.qa/APP/media/images/C1p5b7GaYqMQ5sGn","images":[],"category":"weddings","approval_status":"pending"}]}
+{"photos":[{"sid":"eacd22fb33f958cbdf5d346d15652a8d","header":"test","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 09:12:29","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"},{"sid":"361e2f637184e69c723e76b12f2f0be0","header":"test photo","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 11:50:42","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"},{"sid":"e1bb04723720e89e019fbf0c00ad0f32","header":"test photo 2","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 11:51:45","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"},{"sid":"54884a6da584cc554b297092fa50c31b","header":"new test","username":"test","date":null,"approval_status":"pending","timestamp":"2019/02/20 11:54:33","image":"http://www.alwakra.com.qa/APP/media/images/","images":[],"category":"photos"}],"weddings":[
+    
+    {"sid":"594e3e6ae18c79933dd2e8b59e605fb1","header":"أفراح البوعينين","groom":"علي محمد علي الجابر البوعينين","father":"ابناءمحمد علي الجابر البوعينين","date":"2019/06/22","location":"الموقع","address":"قاعات الاحتفالات الوكرة قاعة رفم 5","mobile":"للإستفسار","username":"khater","timestamp":"2019/06/21 23:02:27","image":"http://www.alwakra.com.qa/APP/media/images/C1p5b7GaYqMQ5sGn","images":[],"category":"weddings","approval_status":"pending"}]}
 
 ---------------------------------------------------------
 
@@ -110,7 +112,6 @@ sample output
 flag: sync_data
 type: add_consolation
 data: {"bury_date":"2021/01/12","bury_time":"after Asr Prayer","bury_address":"Ceremony x","consolation_date":"2021/01/13","men_address":"wakra, block 2","men_location":"google_maps_address","men_mobile":"99x99x99x","women_address":"wakra, block 2","women_location":"google_maps_address","women_mobile":"998883333"}
-
 ---------------------------------------------------------
 sample output
 ---------------------------------------------------------
