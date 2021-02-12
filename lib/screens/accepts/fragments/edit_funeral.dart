@@ -240,71 +240,69 @@ class _EditFuneralState extends State<EditFuneral> {
             SizedBox(
               height: 30,
             ),
-             Row(
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            EasyLoading.show(status: 'Please Wait');
-                            try{
-                              // await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
-                            EasyLoading.showSuccess('Consolation Rejected');
-                            Navigator.pop(context);
-                          },
-                          child: Material(
-                            elevation: 5.0,
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                color: Colors.red,
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(Screen.thumbX(), Screen.thumbY(), Screen.thumbX(), Screen.thumbY()),
-                                child: Icon(
-                                  FontAwesomeIcons.thumbsDown,
-                                  size: Screen.bigButtonFont(),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
+            Row(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    EasyLoading.show(status: 'Please Wait');
+                    try {
+                      // await AcceptApi.news(article);
+                    } catch (e) {}
+                    EasyLoading.showSuccess('Consolation Rejected');
+                    Navigator.pop(context);
+                  },
+                  child: Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.red,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(Screen.thumbX(), Screen.thumbY(), Screen.thumbX(), Screen.thumbY()),
+                        child: Icon(
+                          FontAwesomeIcons.thumbsDown,
+                          size: Screen.bigButtonFont(),
+                          color: Colors.white,
                         ),
-                        SizedBox(width: Screen.xBlock * 1,),
-                        InkWell(
-                          onTap: () async {
-                            EasyLoading.show(status: 'Please Wait');
-                            try{
-                              // await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
-                            EasyLoading.showSuccess('Consolation Accepted');
-                            Navigator.pop(context);
-                          },
-                          child: Material(
-                            elevation: 5.0,
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                color: Colors.blue,
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(Screen.thumbX(), Screen.thumbY(), Screen.thumbX(), Screen.thumbY()),
-                                child: Icon(
-                                  FontAwesomeIcons.thumbsUp,
-                                  size: Screen.bigButtonFont(),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
+                  ),
+                ),
+                SizedBox(
+                  width: Screen.xBlock * 1,
+                ),
+                InkWell(
+                  onTap: () async {
+                    EasyLoading.show(status: 'Please Wait');
+                    try {
+                      // await AcceptApi.news(article);
+                    } catch (e) {}
+                    EasyLoading.showSuccess('Consolation Accepted');
+                    Navigator.pop(context);
+                  },
+                  child: Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.blue,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(Screen.thumbX(), Screen.thumbY(), Screen.thumbX(), Screen.thumbY()),
+                        child: Icon(
+                          FontAwesomeIcons.thumbsUp,
+                          size: Screen.bigButtonFont(),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         SizedBox(
@@ -967,83 +965,68 @@ class _EditFuneralState extends State<EditFuneral> {
             SizedBox(
               height: 30,
             ),
-            InkWell(
-              onTap: () async {
-                if (!Api.validateFuneral(
-                  buryDateController.text,
-                  buryTimeController.text,
-                  burryAddressController.text,
-                  consolationDateController.text,
-                  menAddressController.text,
-                  menLocationController.text,
-                  menMobileController.text,
-                  womenAddressController.text,
-                  womenLocationController.text,
-                  womenMobileController.text,
-                  imageString,
-                )) {
-                  EasyLoading.showError("Please fill all fields");
-                  return;
-                }
-                EasyLoading.show(status: 'Please Wait');
-                var result = await Api.submitFuneral(
-                  buryDateController.text,
-                  buryTimeController.text,
-                  burryAddressController.text,
-                  consolationDateController.text,
-                  menAddressController.text,
-                  menLocationController.text,
-                  menMobileController.text,
-                  womenAddressController.text,
-                  womenLocationController.text,
-                  womenMobileController.text,
-                  imageString,
-                );
-
-                if (result) {
-                  setState(() {
-                    image = null;
-                    intListImage = null;
-                    imageString = null;
-                    nameController.text = '';
-                    buryDateController.text = '';
-                    buryTimeController.text = '';
-                    burryAddressController.text = '';
-                    consolationDateController.text = '';
-                    menAddressController.text = '';
-                    menLocationController.text = '';
-                    menMobileController.text = '';
-                    womenAddressController.text = '';
-                    womenLocationController.text = '';
-                    womenMobileController.text = '';
-                  });
-                  EasyLoading.showSuccess('Consolation saved');
-                } else {
-                  EasyLoading.showSuccess('Unable to save data');
-                }
-              },
-              child: Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.blue,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(60, 6, 60, 6),
-                    child: Text(
-                      'إضافة',
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Arabic',
+            Row(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    EasyLoading.show(status: 'Please Wait');
+                    try {
+                      // await AcceptApi.news(article);
+                    } catch (e) {}
+                    EasyLoading.showSuccess('News Rejected');
+                    Navigator.pop(context);
+                  },
+                  child: Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.red,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(Screen.thumbX(), Screen.thumbY(), Screen.thumbX(), Screen.thumbY()),
+                        child: Icon(
+                          FontAwesomeIcons.thumbsDown,
+                          size: Screen.bigButtonFont(),
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+                SizedBox(
+                  width: Screen.xBlock * 1,
+                ),
+                InkWell(
+                  onTap: () async {
+                    EasyLoading.show(status: 'Please Wait');
+                    try {
+                      // await AcceptApi.news(article);
+                    } catch (e) {}
+                    EasyLoading.showSuccess('News Accepted');
+                    Navigator.pop(context);
+                  },
+                  child: Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.blue,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(Screen.thumbX(), Screen.thumbY(), Screen.thumbX(), Screen.thumbY()),
+                        child: Icon(
+                          FontAwesomeIcons.thumbsUp,
+                          size: Screen.bigButtonFont(),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -1054,7 +1037,7 @@ class _EditFuneralState extends State<EditFuneral> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.fromLTRB(
+      padding: EdgeInsets.fromLTRB(
         Screen.editPaddingX(),
         Screen.editPaddingY(),
         Screen.editPaddingX(),
