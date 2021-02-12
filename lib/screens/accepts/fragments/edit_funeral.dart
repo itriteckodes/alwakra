@@ -6,7 +6,9 @@ import 'dart:typed_data';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:myapp/api/AcceptApi.dart';
 import 'package:myapp/api/Api.dart';
+import 'package:myapp/api/RejectApi.dart';
 import 'package:myapp/helpers/screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -245,9 +247,7 @@ class _EditFuneralState extends State<EditFuneral> {
                 InkWell(
                   onTap: () async {
                     EasyLoading.show(status: 'Please Wait');
-                    try {
-                      // await AcceptApi.news(article);
-                    } catch (e) {}
+                    await RejectApi.submit(article, 'consolation');
                     EasyLoading.showSuccess('Consolation Rejected');
                     Navigator.pop(context);
                   },
@@ -276,9 +276,7 @@ class _EditFuneralState extends State<EditFuneral> {
                 InkWell(
                   onTap: () async {
                     EasyLoading.show(status: 'Please Wait');
-                    try {
-                      // await AcceptApi.news(article);
-                    } catch (e) {}
+                    await AcceptApi.submit(article, 'consolation');
                     EasyLoading.showSuccess('Consolation Accepted');
                     Navigator.pop(context);
                   },
@@ -970,10 +968,8 @@ class _EditFuneralState extends State<EditFuneral> {
                 InkWell(
                   onTap: () async {
                     EasyLoading.show(status: 'Please Wait');
-                    try {
-                      // await AcceptApi.news(article);
-                    } catch (e) {}
-                    EasyLoading.showSuccess('News Rejected');
+                    await RejectApi.submit(article, 'consolation');
+                    EasyLoading.showSuccess('Consolation Rejected');
                     Navigator.pop(context);
                   },
                   child: Material(
@@ -1001,10 +997,8 @@ class _EditFuneralState extends State<EditFuneral> {
                 InkWell(
                   onTap: () async {
                     EasyLoading.show(status: 'Please Wait');
-                    try {
-                      // await AcceptApi.news(article);
-                    } catch (e) {}
-                    EasyLoading.showSuccess('News Accepted');
+                    await AcceptApi.submit(article, 'consolation');
+                    EasyLoading.showSuccess('Consolation Accepted');
                     Navigator.pop(context);
                   },
                   child: Material(

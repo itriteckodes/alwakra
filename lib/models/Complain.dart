@@ -2,13 +2,13 @@ class Complain {
   var sid, header, content, timestamp, image, category, userName;
 
   Complain(article) {
-    sid = article['sid'] ?? " ";
-    header = article['header'] ?? " ";
-    content = article['content'] ?? " ";
-    userName = article['username'] ?? " ";
-    timestamp = article['timestamp'] ?? " ";
-    image = article['image'] ?? " ";
-    category = article['category'] ?? " ";
+    sid = article['sid'] ?? "";
+    header = article['header'] ?? "";
+    content = article['content'] ?? "";
+    userName = article['username'] ?? "";
+    timestamp = article['timestamp'] ?? "";
+    image = article['image'] ?? "";
+    category = article['category'] ?? "";
   }
 
   @override

@@ -6,7 +6,9 @@ import 'dart:typed_data';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:myapp/api/AcceptApi.dart';
 import 'package:myapp/api/Api.dart';
+import 'package:myapp/api/RejectApi.dart';
 import 'package:myapp/helpers/screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -222,12 +224,8 @@ class _EditImageState extends State<EditImage> {
                         InkWell(
                           onTap: () async {
                             EasyLoading.show(status: 'Please Wait');
-                            try{
-                              // await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
-                            EasyLoading.showSuccess('News Rejected');
+                            await RejectApi.submit(article, 'image');
+                            EasyLoading.showSuccess('Image Rejected');
                             Navigator.pop(context);
                           },
                           child: Material(
@@ -253,12 +251,8 @@ class _EditImageState extends State<EditImage> {
                         InkWell(
                           onTap: () async {
                             EasyLoading.show(status: 'Please Wait');
-                            try{
-                              // await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
-                            EasyLoading.showSuccess('News Accepted');
+                            await AcceptApi.submit(article, 'image');
+                            EasyLoading.showSuccess('Image Accepted');
                             Navigator.pop(context);
                           },
                           child: Material(

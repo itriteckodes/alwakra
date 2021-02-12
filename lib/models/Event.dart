@@ -2,12 +2,12 @@ class Event {
   var sid, header, content, userName, date, approvalStatus;
 
   Event(article) {
-    sid = article['sid'] ?? " ";
-    header = article['header'] ?? " ";
-    content = article['content'] ?? " ";
-    userName = article['username'] ?? " ";
-    date = article['date'] ?? " ";
-    approvalStatus = article['approval_status'] ?? " ";
+    sid = article['sid'] ?? "";
+    header = article['header'] ?? "";
+    content = article['content'] ?? "";
+    userName = article['username'] ?? "";
+    date = article['date'] ?? "";
+    approvalStatus = article['approval_status'] ?? "";
   }
 
   @override

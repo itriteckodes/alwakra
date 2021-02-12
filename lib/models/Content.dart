@@ -2,8 +2,8 @@ class Content {
   var sid, content;
 
   Content(article) {
-    sid = article['SID'] ?? " ";
-    content = article['content'] ?? " ";
+    sid = article['SID'] ?? "";
+    content = article['content'] ?? "";
   }
 
   @override

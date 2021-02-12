@@ -7,6 +7,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myapp/api/AcceptApi.dart';
+import 'package:myapp/api/RejectApi.dart';
 import 'package:myapp/helpers/screen.dart';
 
 class EditEvent extends StatefulWidget {
@@ -222,11 +224,7 @@ class _EditEventState extends State<EditEvent> {
                         InkWell(
                           onTap: () async {
                             EasyLoading.show(status: 'Please Wait');
-                            try{
-                              // await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
+                            await RejectApi.submit(article, 'event');
                             EasyLoading.showSuccess('Event Rejected');
                             Navigator.pop(context);
                           },
@@ -253,11 +251,7 @@ class _EditEventState extends State<EditEvent> {
                         InkWell(
                           onTap: () async {
                             EasyLoading.show(status: 'Please Wait');
-                            try{
-                              // await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
+                            await AcceptApi.submit(article, 'event');
                             EasyLoading.showSuccess('Event Accepted');
                             Navigator.pop(context);
                           },

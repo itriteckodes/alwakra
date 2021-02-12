@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:myapp/api/Auth.dart';
 
-class AcceptApi {
+class RejectApi {
   static submit(article, type) async {
     print(article.toString());
 
     var flag = 'flag=sync_data';
-    var mType = 'type=accept_' + type;
+    var mType = 'type=reject_' + type;
     var data = 'data={"category":"'+type+'","sid":"' +
         article.sid +
         '","header":"' +

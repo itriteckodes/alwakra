@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/api/AcceptApi.dart';
+import 'package:myapp/api/RejectApi.dart';
 import 'package:myapp/helpers/screen.dart';
 
 class EditNews extends StatefulWidget {
@@ -221,11 +222,7 @@ class _EditNewsState extends State<EditNews> {
                         InkWell(
                           onTap: () async {
                             EasyLoading.show(status: 'Please Wait');
-                            try{
-                              await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
+                            await RejectApi.submit(article, 'news');
                             EasyLoading.showSuccess('News Rejected');
                             Navigator.pop(context);
                           },
@@ -252,11 +249,7 @@ class _EditNewsState extends State<EditNews> {
                         InkWell(
                           onTap: () async {
                             EasyLoading.show(status: 'Please Wait');
-                            try{
-                              await AcceptApi.news(article);
-                            } catch(e){
-
-                            }
+                            await AcceptApi.submit(article, 'news');
                             EasyLoading.showSuccess('News Accepted');
                             Navigator.pop(context);
                           },

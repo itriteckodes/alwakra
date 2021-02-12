@@ -2,13 +2,13 @@ class Article {
   var sid, header, content, userName, date, approvalStatus, images;
 
   Article(article) {
-    sid = article['sid'] ?? " ";
-    header = article['header'] ?? " ";
-    content = article['content'] ?? " ";
-    userName = article['username'] ?? " ";
-    date = article['date'] ?? " ";
-    approvalStatus = article['approval_status'] ?? " ";
-    images = article['images'] ?? " ";
+    sid = article['sid'] ?? "";
+    header = article['header'] ?? "";
+    content = article['content'] ?? "";
+    userName = article['username'] ?? "";
+    date = article['date'] ?? "";
+    approvalStatus = article['approval_status'] ?? "";
+    images = article['images'] ?? "";
   }
 
   @override
